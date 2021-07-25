@@ -1,48 +1,60 @@
-import React,{Component} from 'react';
+import React,{ useState,useEffect} from 'react';
 import CardList from '../components/CardList';
 // import { friends } from './robots';
 import SearchBox from '../components/SearchBox';
 import Scroll from '../components/Scroll';
 import  './App.css';
-class App extends Component {
-    constructor(){
-        super()
-        this.state = {
-            friends: [],
-            searchfield: ''
-        }
-    }
-    componentDidMount(){
+
+
+function App () {
+    // constructor(){
+    //     super()
+    //     this.state = {
+    //         friends: [],
+    //         searchfield: ''
+    //     }
+    // }
+
+    const [friends,setFriends] = useState([]);
+    const [searchfield, setSearchfield] = useState('');
+    const [count, setCount] = useState(0)
+
+    // componentDidMount(){
+    //     fetch('https://jsonplaceholder.typicode.com/users')
+    //     .then(res => res.json())
+    //     .then(users =>{this.setState({friends: users})})
+    //     // this.setState({friends:friends})
+    // }
+
+    useEffect(() => {
         fetch('https://jsonplaceholder.typicode.com/users')
         .then(res => res.json())
-        .then(users =>{this.setState({friends: users})})
-        // this.setState({friends:friends})
+        .then(users =>{setFriends(users)})
+        console.log(count);
+    },[count]);
+    const onSearchChange = (event) => {
+        setSearchfield(event.target.value);      
     }
+    
+    const filterfriend = friends.filter(friend => {
+    return friend.name.toLowerCase().includes(searchfield.toLowerCase());
+    });
 
-    onSearchChange = (event) => {
-        this.setState({searchfield: event.target.value})      
-    }
+    return !friends.length ?
+        <h1>Loading</h1>
+    :
+        (
+        <div className='tc'>
+            <h1 className='f2'>RoboFriends</h1>
+            <button onClick={()=> setCount(count+1)}>Click Me</button>
+            <SearchBox searchChange = {onSearchChange} />
+            <Scroll>
+                <CardList friends = {filterfriend}/>
+            </Scroll>
+        </div>
+    )
+    
 
-    render() {
-        const {friends, searchfield} = this.state;
-        const filterfriend = friends.filter(friend => {
-        return friend.name.toLowerCase().includes(searchfield.toLowerCase());
-        });
-
-        return !friends.length ?
-            <h1>Loading</h1>
-        :
-            (
-            <div className='tc'>
-                <h1 className='f2'>RoboFriends</h1>
-                <SearchBox searchChange = {this.onSearchChange} />
-                <Scroll>
-                    <CardList friends = {filterfriend}/>
-                </Scroll>
-            </div>
-        )
-        
-    }
 }
 
 export default App;
