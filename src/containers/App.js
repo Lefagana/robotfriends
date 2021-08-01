@@ -30,8 +30,8 @@ function App () {
         fetch('https://jsonplaceholder.typicode.com/users')
         .then(res => res.json())
         .then(users =>{setFriends(users)})
-        console.log(count);
-    },[count]);
+        
+    },[count]);//this empty array only run when the something changes
     const onSearchChange = (event) => {
         setSearchfield(event.target.value);      
     }
