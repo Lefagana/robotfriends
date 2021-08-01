@@ -17,7 +17,7 @@ function App () {
 
     const [friends,setFriends] = useState([]);
     const [searchfield, setSearchfield] = useState('');
-    const [count, setCount] = useState(0)
+    const [count, setCount] = useState(1);
 
     // componentDidMount(){
     //     fetch('https://jsonplaceholder.typicode.com/users')
